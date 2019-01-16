@@ -1,0 +1,108 @@
+{% extends 'analysis/base.html' %}
+
+{% block content %}
+<div id="container"></div>
+<div id="second_solution" data-match="{{ query }}"></div>
+<script language="JavaScript">
+   var div = document.getElementById('second_solution');
+   var json_data = JSON.parse(div.dataset.match);
+   let total_season = [];
+   let total_teams = [];
+   for (season_data of json_data) {
+      if (total_season.includes(season_data['season'])) {
+         continue;
+      } else {
+         total_season.push(season_data['season']);
+      }
+   }
+   let team_win_count = {};
+   for (win_count of json_data) {
+      if (team_win_count.hasOwnProperty(win_count['winner'])) {
+         team_win_count[win_count['winner']].push(win_count['count']);
+      } else {
+         team_win_count[win_count['winner']] = [];
+         team_win_count[win_count['winner']].push(win_count['count']);
+      }
+   }
+   for (let teams in team_win_count) {
+      total_teams.push(teams);
+   }
+   $(document).ready(function () {
+      var chart = {
+         height: 950,
+         type: 'bar'
+      };
+      var title = {
+         text: 'Matches Won By Teams'
+      };
+      var subtitle = {
+         text: 'IPL'
+      };
+      var xAxis = {
+         categories: total_season,
+         title: {
+            text: null
+         }
+      };
+      var yAxis = {
+         min: 0,
+         title: {
+            text: 'Matches Won',
+            align: 'middle'
+         },
+         labels: {
+            overflow: 'justify'
+         }
+      };
+      var tooltip = {
+         valueSuffix: ' wins'
+      };
+      var plotOptions = {
+         bar: {
+            dataLabels: {
+               enabled: true
+            }
+         },
+         series: {
+            stacking: 'normal'
+         }
+      };
+      var legend = {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'top',
+         x: -40,
+         y: 60,
+         floating: false,
+         borderWidth: 1,
+
+         backgroundColor: (
+            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+            '#FFFFFF'),
+         shadow: true
+      };
+      var credits = {
+         enabled: false
+      };
+
+      var series = total_teams.map((team) => {
+         team_with_wins = {};
+         team_with_wins['name'] = team;
+         team_with_wins['data'] = team_win_count[team];
+         return team_with_wins;
+      });
+      var json = {};
+      json.chart = chart;
+      json.title = title;
+      json.subtitle = subtitle;
+      json.tooltip = tooltip;
+      json.xAxis = xAxis;
+      json.yAxis = yAxis;
+      json.series = series;
+      json.plotOptions = plotOptions;
+      json.legend = legend;
+      json.credits = credits;
+      $('#container').highcharts(json);
+   });
+</script>
+{% endblock %}

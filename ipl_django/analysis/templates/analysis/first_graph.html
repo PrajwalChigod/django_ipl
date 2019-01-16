@@ -1,0 +1,89 @@
+{% extends 'analysis/base.html' %}
+
+{% block content %}
+<div id="container"></div>
+<div id="first_solution" data-match="{{ query }}"></div>
+
+<script language="JavaScript">
+    var div = document.getElementById('first_solution');
+    var json_data = JSON.parse(div.dataset.match);
+    var season_array = [];
+    var wins_array = [];
+    for (let json_data_index = 0; json_data_index < json_data.length; json_data_index++) {
+        season_array.push(json_data[json_data_index]['season']);
+        wins_array.push(json_data[json_data_index]['count']);
+    }
+    $(document).ready(function () {
+        var chart = {
+            height: 950,
+            type: 'column'
+        };
+        var title = {
+            text: ' Matches Played Per Year '
+        };
+        var subtitle = {
+            text: 'Source: IPL'
+        };
+        var xAxis = {
+            categories: season_array,
+            title: {
+                text: null
+            }
+        };
+        var yAxis = {
+            min: 0,
+            title: {
+                text: 'Wins',
+                align: 'middle'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        };
+        var tooltip = {
+            valueSuffix: ' Matches'
+        };
+        var plotOptions = {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        };
+        var legend = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 110,
+            floating: true,
+            borderWidth: 1,
+
+            backgroundColor: (
+                (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+                '#FFFFFF'),
+            shadow: true
+        };
+        var credits = {
+            enabled: false
+        };
+        var series = [{
+            name: 'matches',
+            data: wins_array
+        }];
+
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.subtitle = subtitle;
+        json.tooltip = tooltip;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.series = series;
+        json.plotOptions = plotOptions;
+        json.legend = legend;
+        json.credits = credits;
+        $('#container').highcharts(json);
+    });
+</script>
+{% endblock %}

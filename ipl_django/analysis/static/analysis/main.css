@@ -1,0 +1,23 @@
+body    {
+    text-align: center;
+    background-color: royalblue;
+    color: white;
+
+}
+a   {
+    text-decoration: none;
+    color: white;   
+}
+a:hover {
+    color: lightgreen;
+}
+.base-main  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: center;
+    font-weight: bolder;
+    font-size: 2em;
+    padding: 2em ;
+}

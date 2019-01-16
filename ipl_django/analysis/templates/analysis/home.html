@@ -1,0 +1,19 @@
+{% extends 'analysis/base.html' %}
+{% block content %}
+<h1>Welcome to IPL API's and Graphs!!</h1>
+<div class="base-main">
+    <div><a href="{% url 'first_graph' %}" target="_blank">Matches Played Per Year</a></div>
+    <div><a href="{% url 'second_graph' %}" target="_blank">Matches won by teams </a></div>
+    <div><a href="{% url 'third_graph' %}" target="_blank">Extra Runs</a></div>
+    <div><a href="{% url 'fourth_graph' %}" target="_blank">Economic Bowler</a></div>
+    <div><a href="{% url 'fifth_graph' %}" target="_blank">Top Batsmen</a></div>
+</div>
+
+<div class="base-main">
+    <div><a href="{% url 'first_solution' %}" target="_blank">Matches Played Per Year API </a></div>
+    <div><a href="{% url 'second_solution' %}" target="_blank">Matches won by teams API </a></div>
+    <div><a href="{% url 'third_solution' %}" target="_blank">Extra Runs API </a></div>
+    <div><a href="{% url 'fourth_solution' %}" target="_blank">Economic Bowler API </a></div>
+    <div><a href="{% url 'fifth_solution' %}" target="_blank">Top Batsmen API </a></div>
+</div>
+{% endblock %}

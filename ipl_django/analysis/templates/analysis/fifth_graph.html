@@ -1,0 +1,90 @@
+{% extends 'analysis/base.html' %}
+
+{% block content %}
+<div id="container"></div>
+<div id="fifth_solution" data-match="{{ query }}"></div>
+
+<script language="JavaScript">
+    var div = document.getElementById('fifth_solution');
+    var json_data = JSON.parse(div.dataset.match);
+    let batsman_array = [];
+    let top_run_array = [];
+    for (let batsman_top_run of json_data) {
+        batsman_array.push(batsman_top_run['batsman']);
+        top_run_array.push(batsman_top_run['top_run'])
+    }
+    $(document).ready(function () {
+        var chart = {
+            height: 950,
+            type: 'column'
+        };
+        var title = {
+            text: ' Top 10 batsmen in IPL '
+        };
+        var subtitle = {
+            text: 'Source: IPL'
+        };
+        var xAxis = {
+            categories: batsman_array,
+            title: {
+                text: null
+            }
+        };
+        var yAxis = {
+            min: 0,
+            title: {
+                text: ' Runs ',
+                align: 'middle'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        };
+        var tooltip = {
+            valueSuffix: ' Runs '
+        };
+        var plotOptions = {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        };
+        var legend = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 90,
+            floating: true,
+            borderWidth: 1,
+
+            backgroundColor: (
+                (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+                '#FFFFFF'),
+            shadow: true
+        };
+        var credits = {
+            enabled: false
+        };
+        var series = [{
+            name: ' Runs ',
+            data: top_run_array,
+            color: '#FF4500'
+        }];
+
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.subtitle = subtitle;
+        json.tooltip = tooltip;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.series = series;
+        json.plotOptions = plotOptions;
+        json.legend = legend;
+        json.credits = credits;
+        $('#container').highcharts(json);
+    });
+</script>
+{% endblock %}
